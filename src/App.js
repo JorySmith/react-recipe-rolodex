@@ -15,20 +15,20 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar />
-        <Switch>
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/create'>
-            <Create />
-          </Route>
-          <Route path='/search'>
-            <Search />
-          </Route>
-          <Route path='/recipes/:id'>
-            <Recipe />
-          </Route>          
-        </Switch>      
+          <Switch>
+            <Route exact path='/'>
+              <Home />
+            </Route>
+            <Route path='/create'>
+              <Create />
+            </Route>
+            <Route path='/search'>
+              <Search />
+            </Route>
+            <Route path='/recipes/:id'>
+              <Recipe />
+            </Route>          
+          </Switch>      
       </BrowserRouter>
     </div>
   );
