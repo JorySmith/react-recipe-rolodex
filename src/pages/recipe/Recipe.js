@@ -1,18 +1,19 @@
 import { useHistory, useParams } from "react-router-dom"
 import { useEffect } from "react"
+import useFetch from "../../hooks/useFetch"
 
 // Styles
-import useFetch from "../../hooks/useFetch"
 import "./Recipe.css"
 
 export default function Recipe() {
   // To get recipe, extract recipe id from URL using RR hook useParams
-  // Find recipe data using custom hook useFetch
+  // Find recipe data using custom hook useFetch, pass it endpoint plus recipe id
   // If error loading data, redirect user to home with RR hook useHistory.push
   // To display error right away, call useEffect
   // Don't redirect right away, use setTimeout() so user can read error first
   const { id } = useParams()
   const url = "http://localhost:3000/recipes/" + id
+  // Change 'data' param to a custom var name if you want, e.g. 'recipe'
   const { data: recipe, isPending, error } = useFetch(url)
   const history = useHistory()
 
@@ -29,16 +30,21 @@ export default function Recipe() {
   }, [error, history])
     
   return (
-    <div>
-      {isPending && <div></div>}
-      {error && <div></div>}
+    // Add classNames where applicable so you can style where needed
+    // If not className for a div, just use empty fragment
+    <div className="recipe">
+      {isPending && <div className="loading">Loading recipe...</div>}
+      {error && <div className="error">{error}</div>}      
       {recipe && (
-        <div>
-          <h2>{recipe.title}</h2>
-          <p>Ingredients: {recipe.ingredients}</p>
-          <p>{recipe.method}</p>
+        <>
+          <h2 className="page-title">{recipe.title}</h2>
           <p>Cooking time: {recipe.cookingTime}</p>
-        </div>)}
+          <p>Ingredients:</p>
+          <ul>            
+            {recipe.ingredients.map(item => <li key={item}>{item}</li> )}
+          </ul>          
+          <p className="method">{recipe.method}</p>          
+        </>)}
     </div>
   )
 }
