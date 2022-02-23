@@ -6,6 +6,9 @@
     padding: 40px;
     box-sizing: border-box;
   }
+  .recipe .ingredients {
+    margin: 1rem 0 .25rem;
+  }
   .recipe ul {
     display: flex;
     padding: 0;
@@ -21,7 +24,7 @@
     content: ",";
   }
   .recipe li:last-child::after {
-    content: ".";
+    content: "";
   }
   .method {
     text-align: left;
