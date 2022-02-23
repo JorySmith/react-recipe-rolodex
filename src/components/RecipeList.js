@@ -1,5 +1,5 @@
 // rfc or rafce snippets
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 // Styles 
 import './RecipeList.css'
