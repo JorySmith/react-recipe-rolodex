@@ -1,7 +1,7 @@
 import { useHistory, useParams } from "react-router-dom"
-import { useEffect } from "react"
-import { useFetch } from "../../hooks/useFetch"
+import { useEffect, useState } from "react"
 import { useTheme } from "../../hooks/useTheme"
+import { projectFirestore } from "../../firebase/config"
 
 // Styles
 import "./Recipe.css"
@@ -13,15 +13,30 @@ export default function Recipe() {
   // If error loading data, redirect user to home with RR hook useHistory.push
   // To display error right away, call useEffect
   // Don't redirect right away, use setTimeout() so user can read error first
-  const { id } = useParams()
-  const url = "http://localhost:3000/recipes/" + id
-  // Change 'data' param to a custom var name if you want, e.g. 'recipe'
-  const { data: recipe, isPending, error } = useFetch(url)
+  const { id } = useParams()  
   const history = useHistory()
   const { mode } = useTheme()
+  // Track state for data, isPending, and error
+  const [recipe, setRecipe] = useState(null)
+  const [isPending, setIsPending] = useState(false)
+  const [error, setError] = useState(false)
 
   // Fire a function on page load or when a dependency changes: useEffect()
   useEffect(() => {
+    // Loading starts, update setIsPending state
+    setIsPending(true)
+
+    // Get the specific document from firestore collection using id from useParams()
+    projectFirestore.collection('recipes').doc(id).get().then((doc) => {
+      if (doc.exists) {
+        setIsPending(false)
+        setRecipe(doc.data())
+      } else {
+        setIsPending(false)
+        setError("Couldn't find that recipe")
+      }
+    })
+
     if (error) {
           // Redirect user with RR hook useHistory().push('route') after 
           // a setTimeout to allow user to read error first
@@ -30,7 +45,7 @@ export default function Recipe() {
           }, 2000)
           
     }    
-  }, [error, history])
+  }, [id, error, history])
     
   return (
     // Add classNames where applicable so you can style where needed
