@@ -27,7 +27,8 @@ export default function Recipe() {
     setIsPending(true)
 
     // Get the specific document from firestore collection using id from useParams()
-    projectFirestore.collection('recipes').doc(id).get().then((doc) => {
+    // Store in const unsub for use as a cleanup function 
+    const unsub = projectFirestore.collection('recipes').doc(id).onSnapshot((doc) => {
       if (doc.exists) {
         setIsPending(false)
         setRecipe(doc.data())
@@ -36,16 +37,23 @@ export default function Recipe() {
         setError("Couldn't find that recipe")
       }
     })
-
-    if (error) {
-          // Redirect user with RR hook useHistory().push('route') after 
-          // a setTimeout to allow user to read error first
-          setTimeout(() => {
-              history.push('/')
-          }, 2000)
-          
-    }    
+      if (error) {
+        // Redirect user with RR hook useHistory().push('route') after 
+        // a setTimeout to allow user to read error first
+        setTimeout(() => {
+            history.push('/')
+        }, 2000)
+        
+      }    
+      // Return cleanup function
+      return () => unsub()
+      
   }, [id, error, history])
+
+  // Update recipe
+  const handleClick = () => {
+    
+  }
     
   return (
     // Add classNames where applicable so you can style where needed
@@ -62,7 +70,8 @@ export default function Recipe() {
             {recipe.ingredients.map(item => <li key={item}>{item}</li> )}
           </ul>
           <p className="instructions">Instructions:</p>      
-          <p className="method">{recipe.method}</p>          
+          <p className="method">{recipe.method}</p>
+          <button onClick={handleClick}>Update</button>     
         </>)}
     </div>
   )
