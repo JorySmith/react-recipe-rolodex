@@ -21,30 +21,32 @@ export default function Home() {
     // Pending data pull from db
     setIsPending(true)
 
-    // Get firestore collection snapshot
-    projectFirestore.collection('recipes').get().then((snapshot) => {
-      // setError if snapshot.empty
+    // Set onSnapshot listener on firestore collection data
+    // Store in const unsub for cleanup function when component unmounts
+    const unsubscribe = projectFirestore.collection('recipes').onSnapshot((snapshot) => {
+      // Update setError if snapshot.empty
       if (snapshot.empty) {
         setError("No recipes found")
-        // Loading finished
+        // Loading finished, update setIsPending
         setIsPending(false)
       } else {
-        // Loops through snapshot.docs, extract data objects, push to new array
+        // Loop through snapshot.docs, extract data objects, push to new array
         let results = []
         snapshot.docs.forEach((doc) => {
           results.push({ id: doc.id, ...doc.data() })
         })
         // Update setData with results, loading finished so update setIsPending 
         setData(results)
-        setIsPending(false)
-      }
-      // Catch error if so
-    }).catch(err => {
-      // Update setError with err.message
-      // Loading finished, update setIsPending 
+        setIsPending(false)      
+      } 
+    }, (err) => {
+      // Capture error.message if present, update setError with it
+      // Loading done, update setIsPending
       setError(err.message)
       setIsPending(false)
     })
+    // Cleanup function to close/unsub onSnapshot listener on unmount
+    return () => unsubscribe()
   }, [])
 
     

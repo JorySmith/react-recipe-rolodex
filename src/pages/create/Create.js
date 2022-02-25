@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { useHistory } from "react-router-dom"
-import { useFetch } from "../../hooks/useFetch"
+import { projectFirestore } from "../../firebase/config"
 
 // Styles
 import "./Create.css"
@@ -18,21 +18,23 @@ export default function Create() {
   // Store instance of useHistory
   const history = useHistory()  
 
-  // Prepare POSTed recipe via custom hook useFetch
-  const { postData, data, error } = useFetch("http://localhost:3000/recipes", "POST")
+  // Prepare POSTed recipe   
 
-  useEffect(() => {
-    // If data and no error, redirect user to home page
-    if (data && !error) {
-      // Redirect/push user to home
-      history.push('/')
-    }
-  }, [data, error, history])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     // When form is submitted, cancel default page reload action
     e.preventDefault()
-    postData({ title, ingredients, method, cookingTime: cookingTime + " minutes" })  
+    // Store doc details in a var
+    const doc = { title, ingredients, method, cookingTime: cookingTime + " minutes" }
+
+    // Try to add doc to specific firestore collection, catch error if thrown
+    try {
+      await projectFirestore.collection('recipes').add(doc)
+      // Redirect/push user to home
+      history.push('/')
+    } catch (error) {
+      console.log(error)
+    }    
   }
 
   const handleAdd = (e) => {
@@ -69,7 +71,7 @@ export default function Create() {
           {/* Update state after input onChange, use event object target.value */}
           <input 
             type="text"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value.toLowerCase)}
             value={title}
             required />
         </label>

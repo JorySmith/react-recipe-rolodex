@@ -17,3 +17,4 @@ Features
 - Light/dark mode  
 - Dynamic header colors  
 - Hover effects  
+- JavaScript higher-order array methods: forEach(), map()  

@@ -61,7 +61,7 @@ export default function Recipe() {
           <ul>            
             {recipe.ingredients.map(item => <li key={item}>{item}</li> )}
           </ul>
-          <p className="ingredients">Instructions:</p>      
+          <p className="instructions">Instructions:</p>      
           <p className="method">{recipe.method}</p>          
         </>)}
     </div>
