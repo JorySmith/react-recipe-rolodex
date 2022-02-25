@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import { useContext } from 'react'
+import { ThemeContext } from '../context/ThemeContext'
+import { useTheme } from '../hooks/useTheme'
 
 // Components
 import Searchbar from './Searchbar'
@@ -6,10 +9,14 @@ import Searchbar from './Searchbar'
 // Styles
 import './Navbar.css'
 
+
 export default function Navbar() {
+  // Store theme context value via custom hook useTheme
+  const { color, changeColor } = useTheme()
+
   return (
-    <div className='navbar'>
-        <nav>
+    <div className='navbar' style={{ background: color }}>
+        <nav onClick={() => changeColor('red')}>
             {/* Links can have classes, they are anchor tags FYI: 'a' */}
             <Link to='/' className='brand'>
                 <h1>React Recipe Rolodex</h1>
