@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 
+// Components
+import Searchbar from './Searchbar'
+
 // Styles
 import './Navbar.css'
 
@@ -11,6 +14,7 @@ export default function Navbar() {
             <Link to='/' className='brand'>
                 <h1>React Recipe Rolodex</h1>
             </Link>
+            <Searchbar />
             <Link to='/create'>
                 Create Recipe
             </Link>

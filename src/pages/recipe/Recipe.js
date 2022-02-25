@@ -1,6 +1,6 @@
 import { useHistory, useParams } from "react-router-dom"
 import { useEffect } from "react"
-import useFetch from "../../hooks/useFetch"
+import { useFetch } from "../../hooks/useFetch"
 
 // Styles
 import "./Recipe.css"
