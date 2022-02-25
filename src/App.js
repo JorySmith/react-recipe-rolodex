@@ -7,14 +7,19 @@ import Home from './pages/home/Home'
 import Create from './pages/create/Create'
 import Search from './pages/search/Search'
 import Recipe from './pages/recipe/Recipe'
+import { useTheme } from './hooks/useTheme'
 
 // Styles
 import './App.css'
 
 
+
 function App() {
+  // Import dynamic mode from custom hook useTheme()
+  const { mode } = useTheme()
+
   return (
-    <div className="App">
+    <div className={`App ${mode}`}>
       <BrowserRouter>
         <Navbar />
         <ThemeSelector />

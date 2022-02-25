@@ -1,9 +1,11 @@
 import { useHistory, useParams } from "react-router-dom"
 import { useEffect } from "react"
 import { useFetch } from "../../hooks/useFetch"
+import { useTheme } from "../../hooks/useTheme"
 
 // Styles
 import "./Recipe.css"
+
 
 export default function Recipe() {
   // To get recipe, extract recipe id from URL using RR hook useParams
@@ -16,6 +18,7 @@ export default function Recipe() {
   // Change 'data' param to a custom var name if you want, e.g. 'recipe'
   const { data: recipe, isPending, error } = useFetch(url)
   const history = useHistory()
+  const { mode } = useTheme()
 
   // Fire a function on page load or when a dependency changes: useEffect()
   useEffect(() => {
@@ -32,12 +35,12 @@ export default function Recipe() {
   return (
     // Add classNames where applicable so you can style where needed
     // If not className for a div, just use empty fragment
-    <div className="recipe">
+    <div className={`recipe ${mode}`}>
       {isPending && <div className="loading">Loading recipe...</div>}
       {error && <div className="error">{error}</div>}      
       {recipe && (
         <>
-          <h2 className="page-title">{recipe.title}</h2>
+          <h2 className={`page-title ${mode}`}>{recipe.title}</h2>
           <p>Cooking time: {recipe.cookingTime}</p>
           <p className="ingredients">Ingredients:</p>
           <ul>            

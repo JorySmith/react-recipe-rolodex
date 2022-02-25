@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
-import { ThemeContext } from '../context/ThemeContext'
 import { useTheme } from '../hooks/useTheme'
 
 // Components
