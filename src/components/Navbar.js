@@ -12,11 +12,11 @@ import './Navbar.css'
 
 export default function Navbar() {
   // Store theme context value via custom hook useTheme
-  const { color, changeColor } = useTheme()
+  const { color } = useTheme()
 
   return (
     <div className='navbar' style={{ background: color }}>
-        <nav onClick={() => changeColor('red')}>
+        <nav>
             {/* Links can have classes, they are anchor tags FYI: 'a' */}
             <Link to='/' className='brand'>
                 <h1>React Recipe Rolodex</h1>
