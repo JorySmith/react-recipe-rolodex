@@ -27,7 +27,7 @@ export default function Create() {
       // Redirect/push user to home
       history.push('/')
     }
-  }, [data, error])
+  }, [data, error, history])
 
   const handleSubmit = (e) => {
     // When form is submitted, cancel default page reload action
